@@ -14,9 +14,8 @@ self.addEventListener('message', function(e) {
         break;
         };
   
-    }, false);
-
-
+    }, false
+);
 
 
 function start(config){
@@ -33,10 +32,9 @@ function start(config){
 					 "b": trap_b, 
 					 "z": trap_len -1  } );
     
-    eo = new Nodeo( {
-                population_size: population_size,
-			    chromosome_size: chromosome_size,
-			    fitness_func: trap_fitness } );
+    eo = new Nodeo( { population_size: population_size,
+		      chromosome_size: chromosome_size,
+		      fitness_func: trap_fitness } );
     //Worker uuid
     uuid = config.worker_uuid;
 
@@ -46,7 +44,6 @@ function start(config){
     xmlhttp.send();
 
     var generation_count=0;
-	
 }
 
 function do_ea() {
@@ -57,7 +54,6 @@ function do_ea() {
 
     if ( (eo.generation_count % period === 0) ) {
         
-    
         // gets a random chromosome from the pool
         var xmlhttp = new XMLHttpRequest();
         var url = "/random";
