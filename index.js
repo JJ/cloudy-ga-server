@@ -52,23 +52,8 @@ if ( process.env.LOGGLY_TOKEN && process.env.LOGGLY_PASS && process.env.LOGGLY_U
 var chromosomes = {};
 var IPs = {};
 
-// Retrieves a random chromosome
-app.get('/random', function(req, res){
-    if (Object.keys(chromosomes ).length > 0) {
-	var keys = Object.keys(chromosomes );
-	var one = keys[ Math.floor(keys.length*Math.random())];
-	res.send( { 'chromosome': one } );
-	logger.info('get');
-    } else {
-	res.status(404).send('No chromosomes yet');
-    }
-    
-});
 
-// Retrieves the whole chromosome pool
-app.get('/chromosomes', function(req, res){
-    res.send( chromosomes );
-});
+// This group of routes is generic and is not related to the algorithm 
 
 // Retrieves the IPs used
 app.get('/IPs', function(req, res){
@@ -79,6 +64,9 @@ app.get('/IPs', function(req, res){
 app.get('/seq_number', function(req, res){
     res.send( { "number": sequence} );
 });
+
+
+// This group of routes is related to the algorithm. 
 
 // Adds one chromosome to the pool, with fitness
 app.put('/one/:chromosome/:fitness/:uuid', function(req, res){
@@ -114,6 +102,25 @@ app.put('/one/:chromosome/:fitness/:uuid', function(req, res){
     }
     
 });
+
+// Retrieves a random chromosome
+app.get('/random', function(req, res){
+    if (Object.keys(chromosomes ).length > 0) {
+	var keys = Object.keys(chromosomes );
+	var one = keys[ Math.floor(keys.length*Math.random())];
+	res.send( { 'chromosome': one } );
+	logger.info('get');
+    } else {
+	res.status(404).send('No chromosomes yet');
+    }
+    
+});
+
+// Retrieves the whole chromosome pool
+app.get('/chromosomes', function(req, res){
+    res.send( chromosomes );
+});
+
 
 
 // Logs worker info
