@@ -8,13 +8,13 @@
     "test": "mocha"
   },
   "dependencies": {
-    "app.json": "~1.2.1",
-    "express": "~3.4.x",
+    "app.json": "^1.2.1",
+    "express": "^3.4.8",
     "mocha": "~2.1.x",
     "nodeo": "0.0.5",
     "winston": "^0.9.0",
     "winston-irc": "^0.3.4",
-    "winston-loggly": "^1.0.5"
+    "winston-loggly": "^1.1.0"
   },
   "engines": {
     "node": ">=0.10.x",
@@ -41,7 +41,8 @@
     "grunt-cli": "^0.1.13",
     "grunt-docco": "^0.4.0",
     "grunt-shell": "^1.1.2",
-    "should": "~4.6.2",
-    "supertest": "~0.15.0"
+    "mocha": "^2.1.0",
+    "should": "^7.1.0",
+    "supertest": "^1.1.0"
   }
 }

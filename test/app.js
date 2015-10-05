@@ -6,6 +6,7 @@ one_chromosome = { "string": "101101101101",
 great_chromosome = { "string": "whatever",
 		     "fitness": 60 };
 
+// Not really sure why I did this... 
 describe( "Loads configuration correctly", function() {
     it('Should set repo correctly', function( done ) {
 	app.config.should.have.property('repository', "https://github.com/JJ/splash-volunteer");
@@ -13,6 +14,7 @@ describe( "Loads configuration correctly", function() {
     });
 });
 
+// Check for solution, included in configuration
 describe( "Loads termination correctly", function() {
     it('Should terminate when needed', function( done ) {
 	app.is_solution(great_chromosome.string,great_chromosome.fitness).should.be.ok;
@@ -20,10 +22,11 @@ describe( "Loads termination correctly", function() {
     });
 });
 
+// Checks the algorithm functionality 
 describe( "Puts and returns chromosome", function() {
     it('should return correct type', function (done) {
 	request(app)
-	    .put('/one/'+one_chromosome.string+"/"+one_chromosome.fitness)
+	    .put('/one/'+one_chromosome.string+"/"+one_chromosome.fitness+ "/UUID")
 	    .expect('Content-Type', /json/)
 	    .expect(200,done);
     });
