@@ -21,7 +21,7 @@ if (!fs.existsSync(log_dir)){
 // set up static dir
 app.use(express.static(__dirname + '/public'))
 
-// set up experimente sequence
+// set up experimente sequence == experiment ID
 var sequence = 0;
 var temp = new Date();
 var date_str = temp.getFullYear() + "-" + (1 + temp.getMonth()) + "-"+ temp.getDate();

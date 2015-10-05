@@ -4,8 +4,8 @@
   "description": "A backend for evolutionary algorithms running on the client",
   "main": "index.js",
   "scripts": {
-      "start": "node index.js",
-      "test": "mocha"
+    "start": "node index.js",
+    "test": "mocha"
   },
   "dependencies": {
     "app.json": "~1.2.1",
@@ -38,7 +38,10 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "supertest": "~0.15.0",
-    "should": "~4.6.2"
+    "grunt-cli": "^0.1.13",
+    "grunt-docco": "^0.4.0",
+    "grunt-shell": "^1.1.2",
+    "should": "~4.6.2",
+    "supertest": "~0.15.0"
   }
 }
