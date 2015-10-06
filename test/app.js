@@ -30,6 +30,13 @@ describe( "Puts and returns chromosome", function() {
 	    .expect('Content-Type', /json/)
 	    .expect(200,done);
     });
+
+    it('should return incorrect type', function (done) {
+	request(app)
+	    .put('/experiment/1/one/'+one_chromosome.string+"/"+one_chromosome.fitness+ "/UUID")
+	    .expect('Content-Type', /json/)
+	    .expect(301,done);
+    });
     it('should return chromosome', function (done) {
 	request(app)
 	    .get('/random')
