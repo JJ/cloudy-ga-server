@@ -26,7 +26,7 @@ describe( "Loads termination correctly", function() {
 describe( "Puts and returns chromosome", function() {
     it('Should grab experiment id', function(done) {
 	request(app)
-	    .put('/worker/ABCD/3333')
+	    .put('/start/ABCD/with/3333')
 	    .expect('Content-Type', /json/)
 	    .expect(200,done);
     });

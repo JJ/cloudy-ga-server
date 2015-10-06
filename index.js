@@ -128,7 +128,7 @@ app.get('/chromosomes', function(req, res){
 
 
 // Logs worker info
-app.put('/worker/:uuid/:popsize', function(req, res){
+app.put('/start/:uuid/with/:popsize', function(req, res){
 
     var client_ip;
     if ( ! process.env.OPENSHIFT_NODEJS_IP ) { // this is not openshift
