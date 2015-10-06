@@ -125,8 +125,6 @@ app.get('/chromosomes', function(req, res){
     res.send( chromosomes );
 });
 
-
-
 // Logs worker info
 app.put('/start/:uuid/with/:popsize', function(req, res){
     var client_ip;

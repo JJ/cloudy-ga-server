@@ -35,11 +35,9 @@ url += "/";
 var experiment_id;
 log.push( { start: process.hrtime() } );
 var UUID= process.env.LOGNAME+"-"+process.pid;
-console.log( url + 'start/' + UUID + "/with/" + conf.population_size );
 rest.put( url + 'start/' + UUID + "/with/" + conf.population_size)
     .on('complete', function( data ) {
-	if ( data.experiment_id ) {
-	    console.log("Experiment ID " + data.experiment_id );
+	if ( data.experiment_id != undefined ) {
 	    experiment_id = data.experiment_id;
 	}
     });
@@ -69,12 +67,23 @@ function generation() {
 	    });
 	    
 	    // put in pool
-	    rest.put( url + 'one/' + eo.population[0] + "/" + eo.fitness_of[eo.population[0]] );
+	    console.log(url + 'experiment/' +experiment_id
+			+ '/one/' + eo.population[0] + "/" 
+			+ eo.fitness_of[eo.population[0]]
+			+ "/" + UUID);
+
+	    rest.put( url + 'experiment/' +experiment_id
+		      + '/one/' + eo.population[0] + "/" 
+		      + eo.fitness_of[eo.population[0]]
+		      + "/" + UUID );
 	}
     } else {
 	// to force the end of the experiment
 	if ( eo.fitness_of[eo.population[0]] >= traps*conf.fitness.b ) {
-	    rest.put( url + 'one/' + eo.population[0] + "/" + eo.fitness_of[eo.population[0]] );
+	    rest.put( url + 'experiment/' +experiment_id
+		      + '/one/' + eo.population[0] + "/" 
+		      + eo.fitness_of[eo.population[0]]
+		      + "/" + UUID );
 	}
 	log.push( {
 	    end: { 
