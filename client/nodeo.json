@@ -1,6 +1,6 @@
 {  
     "host": "localhost",
-    "port": 5000,
+    "port": 5555,
     "generation_run": 20,
     "max_evaluations": 5000000,
     "population_size": 512,
