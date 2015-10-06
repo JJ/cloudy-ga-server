@@ -69,8 +69,12 @@ app.get('/seq_number', function(req, res){
 // This group of routes is related to the algorithm. 
 
 // Adds one chromosome to the pool, with fitness
-app.put('/one/:chromosome/:fitness/:uuid', function(req, res){
-    if ( req.params.chromosome ) {
+app.put('/experiment/:expid/one/:chromosome/:fitness/:uuid', function(req, res){
+    if ( req.params.expid != sequence.toString() ) {
+	res.status(301)
+	    .location("/start")
+	    .send({ current_expid: sequence });
+    } else if ( req.params.chromosome ) {
 	chromosomes[ req.params.chromosome ] = req.params.fitness; // to avoid repeated chromosomes
 	var client_ip;
 	if ( ! process.env.OPENSHIFT_NODEJS_IP ) { // this is not openshift

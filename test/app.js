@@ -26,7 +26,7 @@ describe( "Loads termination correctly", function() {
 describe( "Puts and returns chromosome", function() {
     it('should return correct type', function (done) {
 	request(app)
-	    .put('/one/'+one_chromosome.string+"/"+one_chromosome.fitness+ "/UUID")
+	    .put('/experiment/0/one/'+one_chromosome.string+"/"+one_chromosome.fitness+ "/UUID")
 	    .expect('Content-Type', /json/)
 	    .expect(200,done);
     });
