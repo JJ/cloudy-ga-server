@@ -35,10 +35,11 @@ url += "/";
 var experiment_id;
 log.push( { start: process.hrtime() } );
 var UUID= process.env.LOGNAME+"-"+process.pid;
-rest.put( url + 'start/' + UUID + "/" + conf.population_size)
+console.log( url + 'start/' + UUID + "/with/" + conf.population_size );
+rest.put( url + 'start/' + UUID + "/with/" + conf.population_size)
     .on('complete', function( data ) {
 	if ( data.experiment_id ) {
-	    console.log("Experiment ID " + data.experiment_id;
+	    console.log("Experiment ID " + data.experiment_id );
 	    experiment_id = data.experiment_id;
 	}
     });
