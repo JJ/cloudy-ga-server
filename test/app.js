@@ -24,6 +24,12 @@ describe( "Loads termination correctly", function() {
 
 // Checks the algorithm functionality 
 describe( "Puts and returns chromosome", function() {
+    it('Should grab experiment id', function(done) {
+	request(app)
+	    .put('/worker/ABCD/3333')
+	    .expect('Content-Type', /json/)
+	    .expect(200,done);
+    });
     it('should return correct type', function (done) {
 	request(app)
 	    .put('/experiment/0/one/'+one_chromosome.string+"/"+one_chromosome.fitness+ "/UUID")
