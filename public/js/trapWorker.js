@@ -7,8 +7,10 @@ self.addEventListener('message', function(e) {
     case 'start':
         start(data.config);
         postMessage({status:'created'});
+        console.log( 'start' )
         break;
     case 'evolve':
+        console.log( 'evolve' )
         postMessage({status:'starting'});
         do_ea();
         break;
@@ -38,11 +40,34 @@ function start(config){
     //Worker uuid
     uuid = config.worker_uuid;
 
+
     var xmlhttp = new XMLHttpRequest();
     // And puts worker info
-    xmlhttp.open("PUT", "/worker/"+uuid+"/"+population_size, true);
-    xmlhttp.send();
+    xmlhttp.open("PUT", "/start/"+uuid+"/with/"+population_size, true);
+    xmlhttp.onreadystatechange = function() {
 
+
+        if (xmlhttp.readyState == 4 ) {
+
+            if (xmlhttp.status == 200 /*|| xmlhttp.status == 304*/)
+            {
+                var data = JSON.parse(xmlhttp.responseText);
+                console.log( data.experiment_id  )
+                if ( data.experiment_id ) {
+                    eo.experiment_id= data.experiment_id;
+                    console.log( eo.experiment_id);
+                }
+
+            }
+            else if ( xmlhttp.status == 404)
+            {
+                console.log("Error 404");
+
+            }
+
+        }
+    }
+    xmlhttp.send();
     var generation_count=0;
 }
 
@@ -93,12 +118,51 @@ function do_ea() {
 
 
         xmlhttp.send();
-          
-        var xmlhttp2 = new XMLHttpRequest();
-        // And puts another one in the pool
-        xmlhttp2.open("PUT", "/one/"+eo.population[0].string+"/"+eo.population[0].fitness+"/"+uuid, true);
-        xmlhttp2.send();
 
+        if (eo.experiment_id  !== "undefined" ) {
+            var xmlhttp2 = new XMLHttpRequest();
+            // And puts another one in the pool
+            ///experiment/:expid/one/:chromosome/:fitness/:uuid
+            xmlhttp2.open("PUT", "/experiment/" + eo.experiment_id + "/one/" + eo.population[0].string + "/" + eo.population[0].fitness + "/" + uuid, true);
+            xmlhttp2.onreadystatechange = function () {
+                if (xmlhttp2.readyState == 4 && xmlhttp3.status == 200) {
+                    var data = JSON.parse(xmlhttp3.responseText);
+                    current_expid = data.current_expid;
+
+
+                    postMessage(
+                        {
+                            status: 'working',
+                            generation_count: eo.generation_count,
+                            best: eo.population[0].string,
+                            fitness: eo.population[0].fitness, 'period': period, 'ips': ips,
+                            pop_size: eo.population.length,
+                            current_expid: current_expid
+                        });
+
+
+                }
+                else if (xmlhttp2.status == 301) {
+                    var data = JSON.parse(xmlhttp3.responseText);
+                    ips = Object.keys(data).length;
+
+                    postMessage(
+                        {
+                            status: 'finished',
+                            generation_count: eo.generation_count,
+                            best: eo.population[0].string,
+                            fitness: eo.population[0].fitness,
+                            'period': period,
+                            pop_size: eo.population.length
+                        });
+
+
+                }
+
+
+            }
+            xmlhttp2.send();
+        }
         //IPs
         var xmlhttp3 = new XMLHttpRequest();
         var url = "/IPs";
