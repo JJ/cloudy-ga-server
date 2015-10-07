@@ -187,9 +187,9 @@ function do_ea() {
             };
             xmlhttp2.send();
         }
-        //IPs
+        //Workers
         var xmlhttp3 = new XMLHttpRequest();
-        var url = "/IPs";
+        var url = "/workers";
         var ips = "";
         xmlhttp3.onreadystatechange = function() {
             if (xmlhttp3.readyState == 4 && xmlhttp3.status == 200) {
@@ -201,7 +201,9 @@ function do_ea() {
                     status:'working',
                     generation_count:eo.generation_count, 
                     best:eo.population[0].string, 
-                    fitness:eo.population[0].fitness,'period':period,'ips':ips,
+                    fitness:eo.population[0].fitness,
+                    'period':period,
+                    'ips':ips,
                     pop_size: eo.population.length
                     });
 
