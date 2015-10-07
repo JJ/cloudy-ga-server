@@ -2,7 +2,6 @@ var fs = require('fs'),
 express = require('express'),
 app = express(),
 winston = require('winston'),
-loggly = require('winston-loggly'),
 App = require("app.json"); // Used for configuration and by Heroku
 
 // Includes termination condition
@@ -33,20 +32,6 @@ var logger = new (winston.Logger)({
 	new (winston.transports.File)({ filename: log_dir+'/nodio-'+date_str+ "-" + sequence+'.log', level: 'info' })
     ]
 });
-
-// set up Loggly logger if it is configured by env variables
-if ( process.env.LOGGLY_TOKEN && process.env.LOGGLY_PASS && process.env.LOGGLY_USER) {
-    logger.add( winston.transports.Loggly, 
-		{ inputToken: process.env.LOGGLY_TOKEN ,
-		  level: 'info',
-		  subdomain: process.env.LOGGLY_USER,
-		  json: true,
-		  "auth": {
-		      "username": process.env.LOGGLY_USER,
-		      "password": process.env.LOGGLY_PASS
-		  }
-		} );
-}
 
 // internal variables
 var chromosomes = {};
