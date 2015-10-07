@@ -1,4 +1,5 @@
 importScripts("nodeo.js");
+importScripts("twix.min.js");
 
 self.addEventListener('message', function(e) {
   var data = e.data;
@@ -113,7 +114,18 @@ function do_ea() {
     //}
 
     if ( (eo.generation_count % period === 0) ) {
-        
+
+
+
+        Twix.get("/random", function( data ) {
+
+            //ips_data.labels.push(generation_count);
+            //ips_data.datasets[0].data.push( Object.keys( data ).length );
+            //ips_chart.Line(ips_data);
+
+        });
+
+
         // gets a random chromosome from the pool
         var xmlhttp = new XMLHttpRequest();
         var url = "/random";
