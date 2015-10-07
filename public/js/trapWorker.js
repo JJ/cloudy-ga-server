@@ -66,7 +66,7 @@ function init_worker(config) {
                     });
 
             }
-            else if ( xmlhttp.status == 404)
+            else if (xmlhttp2.readyState == 4 &&  xmlhttp.status == 404)
             {
                 /// UNABLE TO INITIALIZE
                 console.log("Error 404: not_created");
@@ -170,7 +170,7 @@ function do_ea() {
                             current_expid: self.experiment_id
                         });
                 }
-                else if (xmlhttp2.status == 410) {
+                else if (xmlhttp2.readyState == 4 && xmlhttp2.status == 410) {
                     var data = JSON.parse(xmlhttp2.responseText);
                     self.experiment_id = data.current_expid;
 
@@ -246,7 +246,7 @@ function do_ea() {
 
 
                 }
-                else if (xmlhttp2.status == 410) {
+                else if (xmlhttp2.readyState == 4 && xmlhttp2.status == 410) {
                     var data = JSON.parse(xmlhttp2.responseText);
                     self.experiment_id = data.current_expid;
 
