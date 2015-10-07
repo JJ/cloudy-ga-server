@@ -5,71 +5,106 @@ self.addEventListener('message', function(e) {
   switch (data.cmd) {
 
     case 'start':
-        start(data.config);
-        postMessage({status:'created'});
-        console.log( 'start' )
+        init_worker(data.config);
+        console.log( 'start' );
         break;
     case 'evolve':
-        console.log( 'evolve' )
-        postMessage({status:'starting'});
+        console.log( 'evolve' );
         do_ea();
         break;
-        };
+        }
   
     }, false
 );
 
 
-function start(config){
-	
-    var population_size = config.population_size;
-        period = config.period;
-        traps = config.traps;
-    var trap_len = config.trap_len;
-        trap_b =  config.trap_b;
-    var chromosome_size = traps*trap_len;
-    
-    var trap_fitness = new trap.Trap(  { "l": trap_len, 
-					 "a": 1, 
-					 "b": trap_b, 
-					 "z": trap_len -1  } );
-    
-    eo = new Nodeo( { population_size: population_size,
-		      chromosome_size: chromosome_size,
-		      fitness_func: trap_fitness } );
+
+
+
+function init_worker(config) {
+    self.population_size = config.population_size;
+    self.period = config.period;
+    self.traps = config.traps;
+    self.trap_len = config.trap_len;
+    self.trap_b = config.trap_b;
+    self.chromosome_size = traps * trap_len;
+    self.experiment_id = null;
+
+    self.trap_fitness = new trap.Trap({
+        "l": trap_len,
+        "a": 1,
+        "b": trap_b,
+        "z": trap_len - 1
+    });
+
+    self.eo = new Nodeo({
+        population_size: self.population_size,
+        chromosome_size: self.chromosome_size,
+        fitness_func: self.trap_fitness
+    });
     //Worker uuid
-    uuid = config.worker_uuid;
-
-
+    self.uuid = config.worker_uuid;
     var xmlhttp = new XMLHttpRequest();
-    // And puts worker info
+    // PUTs worker info
     xmlhttp.open("PUT", "/start/"+uuid+"/with/"+population_size, true);
     xmlhttp.onreadystatechange = function() {
-
-
         if (xmlhttp.readyState == 4 ) {
 
             if (xmlhttp.status == 200 /*|| xmlhttp.status == 304*/)
             {
                 var data = JSON.parse(xmlhttp.responseText);
-                console.log( data.experiment_id  )
-                if ( data.experiment_id ) {
-                    eo.experiment_id= data.experiment_id;
-                    console.log( eo.experiment_id);
+                console.log( data.experiment_id  );
+                if ( data.experiment_id !== "undefined"  ) {
+
+                    self.experiment_id= data.experiment_id;
+                    console.log(self.experiment_id);
                 }
+
+                postMessage(
+                    {
+                        status:'created'
+                    });
 
             }
             else if ( xmlhttp.status == 404)
             {
-                console.log("Error 404");
+                /// UNABLE TO INITIALIZE
+                console.log("Error 404: not_created");
+                // TO DO: HANDLE
+                postMessage(
+                    {
+                        status:'not_created'
+                    });
 
             }
 
         }
-    }
+    };
     xmlhttp.send();
-    var generation_count=0;
 }
+
+
+function restart() {
+
+    console.log("restarting");
+
+
+    self.eo = new Nodeo({
+        population_size: self.population_size,
+        chromosome_size: self.chromosome_size,
+        fitness_func: self.trap_fitness
+    });
+
+    postMessage(
+        {
+            status:'starting'
+
+        });
+
+    do_ea();
+}
+
+
 
 function do_ea() {
     eo.generation();
@@ -114,21 +149,16 @@ function do_ea() {
                     }
 
             }
-        }
-
-
+        };
         xmlhttp.send();
 
-        if (eo.experiment_id  !== "undefined" ) {
+
+        if (self.experiment_id  !== "undefined" ) {
             var xmlhttp2 = new XMLHttpRequest();
             // And puts another one in the pool
-            ///experiment/:expid/one/:chromosome/:fitness/:uuid
-            xmlhttp2.open("PUT", "/experiment/" + eo.experiment_id + "/one/" + eo.population[0].string + "/" + eo.population[0].fitness + "/" + uuid, true);
+            xmlhttp2.open("PUT", "/experiment/" + self.experiment_id + "/one/" + eo.population[0].string + "/" + eo.population[0].fitness + "/" + uuid, true);
             xmlhttp2.onreadystatechange = function () {
-                if (xmlhttp2.readyState == 4 && xmlhttp3.status == 200) {
-                    var data = JSON.parse(xmlhttp3.responseText);
-                    current_expid = data.current_expid;
-
+                if (xmlhttp2.readyState == 4 && xmlhttp2.status == 200) {
 
                     postMessage(
                         {
@@ -137,30 +167,24 @@ function do_ea() {
                             best: eo.population[0].string,
                             fitness: eo.population[0].fitness, 'period': period, 'ips': ips,
                             pop_size: eo.population.length,
-                            current_expid: current_expid
+                            current_expid: self.experiment_id
                         });
-
-
                 }
-                else if (xmlhttp2.status == 301) {
-                    var data = JSON.parse(xmlhttp3.responseText);
-                    ips = Object.keys(data).length;
+                else if (xmlhttp2.status == 410) {
+                    var data = JSON.parse(xmlhttp2.responseText);
+                    self.experiment_id = data.current_expid;
 
-                    postMessage(
-                        {
-                            status: 'finished',
-                            generation_count: eo.generation_count,
-                            best: eo.population[0].string,
-                            fitness: eo.population[0].fitness,
-                            'period': period,
-                            pop_size: eo.population.length
+                    postMessage({
+                            status: 'experiment_not_found',
+                            current_experiment_id:self.experiment_id
                         });
+                    restart();
 
 
                 }
 
 
-            }
+            };
             xmlhttp2.send();
         }
         //IPs
@@ -173,8 +197,8 @@ function do_ea() {
                 ips = Object.keys( data ).length;
 
 
-                postMessage( 
-                {   status:'working', 
+                postMessage({
+                    status:'working',
                     generation_count:eo.generation_count, 
                     best:eo.population[0].string, 
                     fitness:eo.population[0].fitness,'period':period,'ips':ips,
@@ -185,7 +209,7 @@ function do_ea() {
                 }
 
 
-            }
+            };
         xmlhttp3.open("GET", url, true);
         xmlhttp3.send();
 
@@ -201,22 +225,49 @@ function do_ea() {
     
     else{
 
-        // And puts another one in the pool
-        var xmlhttp4 = new XMLHttpRequest();
-        xmlhttp4.open("PUT", "/one/"+eo.population[0].string+"/"+eo.population[0].fitness+"/"+uuid, true);
-        xmlhttp4.send();
+        /// FOUND IT
 
-        postMessage(
-            {
-                status:'finished',
-                generation_count:eo.generation_count,
-                best:eo.population[0].string,
-                fitness:eo.population[0].fitness,
-                'period':period,
-                pop_size: eo.population.length
-            });
+        if (self.experiment_id  !== "undefined" ) {
 
-        console.log('finished after')
+            var xmlhttp2 = new XMLHttpRequest();
+            ///experiment/:expid/one/:chromosome/:fitness/:uuid
+            xmlhttp2.open("PUT", "/experiment/" + self.experiment_id + "/one/" + eo.population[0].string + "/" + eo.population[0].fitness + "/" + uuid, true);
+            xmlhttp2.onreadystatechange = function () {
+                if (xmlhttp2.readyState == 4 && xmlhttp2.status == 200) {
+                    postMessage(
+                        {
+                            status:'finished',
+                            generation_count: eo.generation_count,
+                            best: eo.population[0].string,
+                            fitness: eo.population[0].fitness, 'period': period, 'ips': ips,
+                            pop_size: eo.population.length,
+                            current_expid: self.experiment_id
+                        });
+
+
+                }
+                else if (xmlhttp2.status == 410) {
+                    var data = JSON.parse(xmlhttp2.responseText);
+                    self.experiment_id = data.current_expid;
+
+                    postMessage(
+                        {
+                           status: 'experiment_not_found',
+                           current_experiment_id:self.experiment_id
+
+                        });
+                    restart();
+
+                }
+
+                console.log('finished after');
+            };
+
+            xmlhttp2.send();
+        }
+
+
+
         //close();
     }
 }

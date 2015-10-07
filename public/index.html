@@ -255,7 +255,6 @@
 
             }
         }
-        worker.count = 0;
         worker.uuid = generateUUID();
         worker.addEventListener('message', function (e) {
 
@@ -268,6 +267,9 @@
                         break;
                     case 'starting':
                         document.getElementById('worker_status').textContent = 'Starting';
+                        break;
+                    case 'experiment_not_found':
+                        document.getElementById('worker_status').textContent = 'Experiment Not Found';
                         break;
 
                     case 'working':
@@ -290,29 +292,18 @@
                         break;
 
                     case 'finished':
-
-                        if (worker.count == 0) {
-                            for (var i = 0; i < e.data.best.length; i++) {
-                                chromosome_chart.datasets[0].bars[i].value = e.data.best[i];
-
-                            }
-                            chromosome_chart.update();
-                            document.getElementById('worker_current_generation').textContent = e.data.generation_count.toString();
-                            document.getElementById('worker_current_best').textContent = e.data.fitness;
-                            fitness_chart.addData([e.data.fitness], e.data.generation_count);
-                            fitness_chart.update();
-                            document.getElementById('worker_status').textContent = 'Finished';
-                            document.getElementById('number_of_solutions_found').textContent = parseInt(document.getElementById('number_of_solutions_found').textContent) + 1;
-                            setTimeout(setup_worker, 20000);
-                            console.log('finished' + worker.count++);
+                        for (var i = 0; i < e.data.best.length; i++) {
+                            chromosome_chart.datasets[0].bars[i].value = e.data.best[i];
 
                         }
+                        chromosome_chart.update();
+                        document.getElementById('worker_current_generation').textContent = e.data.generation_count.toString();
+                        document.getElementById('worker_current_best').textContent = e.data.fitness;
+                        fitness_chart.addData([e.data.fitness], e.data.generation_count);
+                        fitness_chart.update();
+                        document.getElementById('worker_status').textContent = 'Finished';
+                        document.getElementById('number_of_solutions_found').textContent = parseInt(document.getElementById('number_of_solutions_found').textContent) + 1;
 
-                        break;
-                    case 'no_work':
-                        document.getElementById('worker_status').textContent = 'no_work';
-                        break;
-                    default:
                 }
 
             }
@@ -348,6 +339,7 @@
         config.worker_uuid = worker.uuid;
 
         worker.postMessage({'cmd': 'start', 'config': config});
+        // Solo start?
         worker.postMessage({'cmd': 'evolve'});
 
 
