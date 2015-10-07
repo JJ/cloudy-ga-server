@@ -34,8 +34,9 @@ var logger = new (winston.Logger)({
 });
 
 // internal variables
-var chromosomes = {};
-var IPs = {};
+var chromosomes = {},
+IPs = {},
+workers = {};
 
 
 // This group of routes is generic and is not related to the algorithm 
@@ -43,6 +44,11 @@ var IPs = {};
 // Retrieves the IPs used
 app.get('/IPs', function(req, res){
     res.send( IPs );
+});
+
+// Retrieves the IPs used
+app.get('/workers', function(req, res){
+    res.send( workers );
 });
 
 // Retrieves the sequence number
@@ -73,10 +79,16 @@ app.put('/experiment/:expid/one/:chromosome/:fitness/:uuid', function(req, res){
 	    IPs[ client_ip ]++;
 	}
 
+	if ( !workers[ req.params.uuid ] ) {
+	    workers[ req.params.uuid  ]=1;
+	} else {
+	    workers[ req.params.uuid ]++;
+	}
+
 	logger.info("put", { chromosome: req.params.chromosome,
 			     fitness: parseInt(req.params.fitness),
 			     IP: client_ip,
-	             worker_uuid:req.params.uuid} );
+			     worker_uuid:req.params.uuid} );
 	res.send( { length : Object.keys(chromosomes).length });
 	if ( app.is_solution( req.params.chromosome, req.params.fitness, app.config.vars.traps, app.config.vars.b ) ) {
 	    console.log( "Solution!");
