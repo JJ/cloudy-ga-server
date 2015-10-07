@@ -256,10 +256,11 @@ function do_ea() {
                            current_experiment_id:self.experiment_id
 
                         });
-                    restart();
+
 
                 }
-
+                // Restart either way
+                restart();
                 console.log('finished after');
             };
 
