@@ -49,7 +49,7 @@
             <ul class="nav nav-pills pull-right">
                 <li role="presentation" class="active"><a href="#">Home</a></li>
 
-                <li role="presentation"><a href="/">Restart</a></li>
+                <li role="presentation"><a href="/">Reload Page</a></li>
                 <li role="presentation"><a href="https://github.com/mariosky/splash-volunteer">Fork in Github</a></li>
             </ul>
         </nav>
@@ -96,7 +96,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <button type="button" class="btn btn-danger btn-sm" id="re-start">Re-start</button>
+                            <a class="btn btn-default" href="/"  target="_blank" role="button">Create a new worker window</a>
+
                         </div>
                     </div>
                 </div>
@@ -219,9 +220,7 @@
 
     $( document ).ready(function() {
 
-        $("#re-start").click(function () {
-            setup_worker();
-        });
+
 
         setup_worker();
     });
