@@ -44,7 +44,7 @@ rest.put( url + 'start/' + UUID + "/with/" + conf.population_size)
 console.log( "Starting ");
 // start running the GA
 var generation_count = 0;
-
+var finished = false;
 
 // Start loop
 generation();
@@ -67,15 +67,15 @@ function generation() {
 	    });
 	    
 	    // put in pool
-	    console.log(url + 'experiment/' +experiment_id
-			+ '/one/' + eo.population[0] + "/" 
-			+ eo.fitness_of[eo.population[0]]
-			+ "/" + UUID);
-
 	    rest.put( url + 'experiment/' +experiment_id
 		      + '/one/' + eo.population[0] + "/" 
 		      + eo.fitness_of[eo.population[0]]
-		      + "/" + UUID );
+		      + "/" + UUID ).on("complete", function( result, response ) {
+			  if ( response.statusCode == 410 ) {
+			      finished = true;
+			      experiment_id = result.current_id;
+			  }
+		      });
 	}
     } else {
 	// to force the end of the experiment
