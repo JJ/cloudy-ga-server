@@ -41,7 +41,7 @@ describe( "Puts and returns chromosome", function() {
 	request(app)
 	    .put('/experiment/1/one/'+one_chromosome.string+"/"+one_chromosome.fitness+ "/UUID")
 	    .expect('Content-Type', /json/)
-	    .expect(301,done);
+	    .expect(410,done);
     });
     it('should return chromosome', function (done) {
 	request(app)

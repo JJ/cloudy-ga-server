@@ -72,7 +72,7 @@ app.get('/seq_number', function(req, res){
 app.put('/experiment/:expid/one/:chromosome/:fitness/:uuid', function(req, res){
     if ( req.params.expid != sequence.toString() ) {
 	res.status(410)
-		.send({ current_expid: sequence });
+	    .send({ current_expid: sequence });
     } else if ( req.params.chromosome ) {
 	chromosomes[ req.params.chromosome ] = req.params.fitness; // to avoid repeated chromosomes
 	var client_ip;
