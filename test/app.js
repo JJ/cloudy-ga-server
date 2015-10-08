@@ -82,6 +82,33 @@ describe( "Puts and returns chromosome", function() {
 		done();
 	    });
     });
+    it('should return IP count', function (done) {
+	request(app)
+	    .get('/IPs/count')
+	    .expect('Content-Type', /json/)
+	    .expect(200)
+	    .end( function ( error, resultado ) {
+		if ( error ) {
+		    return done( error );
+		}
+		resultado.body.should.be.instanceof(Object);
+		done();
+	    });
+    });
+    it('should return worker count', function (done) {
+	request(app)
+	    .get('/workers/count')
+	    .expect('Content-Type', /json/)
+	    .expect(200)
+	    .end( function ( error, resultado ) {
+		if ( error ) {
+		    return done( error );
+		}
+		resultado.body.should.be.instanceof(Object);
+		resultado.body.should.have.property('worker_count', 1);
+		done();
+	    });
+    });
     
     it('should return sequence number', function (done) {
 	request(app)

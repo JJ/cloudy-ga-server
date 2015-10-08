@@ -46,9 +46,19 @@ app.get('/IPs', function(req, res){
     res.send( IPs );
 });
 
+// Retrieves the number of IPs seen
+app.get('/IPs/count', function(req, res){
+    res.send( { ip_count: Object.keys( IPs).length } );
+});
+
 // Retrieves the IPs used
 app.get('/workers', function(req, res){
     res.send( workers );
+});
+
+// Retrieves the number of workers seen
+app.get('/workers/count', function(req, res){
+    res.send( { worker_count: Object.keys( workers).length } );
 });
 
 // Retrieves the sequence number
