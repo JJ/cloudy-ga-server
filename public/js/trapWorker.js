@@ -171,6 +171,7 @@ function do_ea() {
                         });
                         restart();
 
+
                     }
                 }
             });
