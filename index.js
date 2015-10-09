@@ -83,18 +83,6 @@ app.put('/experiment/:expid/one/:chromosome/:fitness/:uuid', function(req, res){
 	    client_ip = req.headers['x-forwarded-for'];
 	}
 
-	if ( !IPs[ client_ip ] ) {
-	    IPs[ client_ip ]=1;
-	} else {
-	    IPs[ client_ip ]++;
-	}
-
-	if ( !workers[ req.params.uuid ] ) {
-	    workers[ req.params.uuid  ]=1;
-	} else {
-	    workers[ req.params.uuid ]++;
-	}
-
 	logger.info("put", { chromosome: req.params.chromosome,
 			     fitness: parseInt(req.params.fitness),
 			     IP: client_ip,
@@ -139,7 +127,9 @@ app.put('/start/:uuid/with/:popsize', function(req, res){
     } else {
 	client_ip = req.headers['x-forwarded-for'];
     }
-    
+    IPs[ client_ip ]=1;
+    workers[ req.params.uuid  ]=1;
+
     logger.info("worker", {
 	experiment_id: req.params.expid,
 	IP: client_ip,
