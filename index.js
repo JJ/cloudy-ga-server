@@ -100,7 +100,7 @@ app.put('/experiment/:expid/one/:chromosome/:fitness/:uuid', function(req, res){
 			     IP: client_ip,
 			     worker_uuid:req.params.uuid} );
 	res.send( { length : Object.keys(chromosomes).length });
-	if ( app.is_solution( req.params.chromosome, req.params.fitness, app.config.vars.traps, app.config.vars.b ) ) {
+	if ( app.is_solution( req.params.fitness ) ) {
 	    console.log( "Solution!");
 	    logger.info( "finish", { solution: req.params.chromosome } );
 	    chromosomes = {};
