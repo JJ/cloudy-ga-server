@@ -4,6 +4,9 @@ app = express(),
 winston = require('winston'),
 App = require("app.json"); // Used for configuration and by Heroku
 
+// configure log
+require('winston-papertrail').Papertrail;
+
 // Includes termination condition
 app.is_solution = require("./is_solution.js");
 // Other configuration variables 
@@ -32,6 +35,15 @@ var logger = new (winston.Logger)({
 	new (winston.transports.File)({ filename: log_dir+'/nodio-'+date_str+ "-" + sequence+'.log', level: 'info' })
     ]
 });
+
+if ( typeof process.env.PAPERTRAIL_PORT !== 'undefined' && typeof process.env.PAPERTRAIL_HOST !== 'undefined' ) { 
+    logger.add(winston.transports.Papertrail, 
+	       {
+		   host: process.env.PAPERTRAIL_HOST,
+		   port: process.env.PAPERTRAIL_PORT
+	       }
+	      )
+}
 
 // internal variables
 var chromosomes = {},
