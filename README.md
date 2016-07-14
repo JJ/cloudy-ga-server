@@ -27,3 +27,9 @@ using this:
  keywords = {desktop grid, distributed computing, internet computing, socio-technical systems, volunteer computing},
 }
 ```
+
+## About this version
+
+The original version is in [NodIO](http://github.com/NodeoIO/NodIO). This is a pared-down version for the Cloudy GA tutorial at GECCO 2016.
+
+Please check the [`clients`](clients/) subdirectory for examples on how to use it in practice or go to [the tutorial site](http://github.com/JJ/cloudy-ga) for a bit of context and more examples.
