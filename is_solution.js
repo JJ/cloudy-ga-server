@@ -4,7 +4,7 @@ module.exports = exports = function( fitness ) {
     if ( !fitness ) {
 	return false;
     }
-    if ( fitness < 2304 ) { // HIFF with 256 bits
+    if ( fitness < 5120 ) { // HIFF with 256 bits
 	return false;
     } else {
 	return true;
