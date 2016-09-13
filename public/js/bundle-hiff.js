@@ -202,25 +202,26 @@ Tournament = Selection.Tournament;
     // Chart data
     var chart_size = 50;
     var fitness_data = {
-        labels : [],
-        datasets : [
-            {
-                fillColor : "rgba(172,194,132,0.4)",
-                strokeColor : "#ACC26D",
-                pointColor : "#fff",
-                pointStrokeColor : "#9DB86D",
-                data : []
-            }
-        ]
-    };
-    var this_chart = new Chart( document.getElementById('fitness'), {
 	type: 'line',
-	data: fitness_data,
 	options:  { 
 	    responsive: false,
 	    maintainAspectRatio: true
+	},
+	data: {
+            labels : [],
+            datasets : [
+		{
+		    label: "Fitness",
+                    fillColor : "rgba(172,194,132,0.4)",
+                    strokeColor : "#ACC26D",
+                    pointColor : "#fff",
+                    pointStrokeColor : "#9DB86D",
+                    data : []
+		}
+            ]
 	}
-    });
+    };
+    var this_chart = new Chart( fitness, fitness_data);
 
     // var this_chart = new Chart(fitness).Line(fitness_data,  { 
     // 	responsive: false,
@@ -232,7 +233,8 @@ var chromosome_size = 256;
 var population_size = 1024;
 var tournament_size = 2;
 var total_generations = 0;
-
+var UUID = parseInt(window.navigator.userAgent.replace(/\D+/g, ''));
+console.log(UUID);
 var hiff = new HIFF.HIFF();
 
 var this_fitness = function( individual ) {
@@ -255,21 +257,31 @@ var check = function( population ) {
 
     if ( population.fitness( population.best()) < 2304  ) {
 	generation_count++;
-
 	// Perform interchange
+	console.log( " Best " );
+	console.log(population.best());
 	if ( (generation_count % period === 0) ) {
 //	    console.log(generation_count);
 	    
 	    // chart fitness
-	    if ( fitness_data.labels.length > chart_size ) {
-		this_chart.removeData();
-	    }
-	    this_chart.addData([population.best().fitness], generation_count);
-            this_chart.update();
+	    // if ( fitness_data.labels.length > chart_size ) {
+	    // 	this_chart.removeData();
+	    // }
+	    // this_chart.addData([population.best().fitness], generation_count);
+            // this_chart.update();
+
+//	    if (typeof  this_chart.datasets[0].data !== 'undefined' ) {
+//		this_chart.data.labels.splice(0, 1);
+//		this_chart.data.datasets[0].data.splice(0, 1);            
+//		this_chart.data.datasets[0].metaData.splice(0, 1);
+//	    }
+	    fitness_data.data.labels.push('' + generation_count);
+            fitness_data.data.datasets[0].data.push(population.fitness( population.best()));
+	    this_chart.update();
 
 	    // And puts another one in the pool
 	    $.ajax({ type: 'put',
-		     url: "one/"+eo.population[0].string+"/"+eo.population[0].fitness } )	
+		     url: "/experiment/0/one/"+population.best()+"/"+population.fitness(population.best())+"/"+UUID } )	
 		.done( function( data ) {
 		    if ( data.chromosome ) {
 			eo.incorporate( data.chromosome );
