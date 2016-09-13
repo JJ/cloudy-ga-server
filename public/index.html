@@ -12,6 +12,14 @@
 		<!-- Theme used for syntax highlighting of code -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
+		    <script
+		       src="https://code.jquery.com/jquery-2.2.4.min.js"
+		       integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+		       crossorigin="anonymous"></script>
+
+    <!-- for Chart -->
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js'></script>
+
 		<!-- Printing and PDF exports -->
 		<script>
 			var link = document.createElement( 'link' );
@@ -22,6 +30,12 @@
 		</script>
   </head>
   <body>
+
+    <div id='chart' style="position:absolute; top:20px; right:20px; z-index:3">    
+      <!-- top right corner evolution graph -->
+      <canvas id="fitness" width="240" height="180"></canvas>
+    </div>
+
     <div class="reveal">
       <div class="slides">
 	<section>
@@ -50,10 +64,11 @@
     <script src="lib/js/head.min.js"></script>
     <script src="js/reveal.js"></script>
     
-		<script>
-			// More info https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				history: true,
+    <script>
+      // More info https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+      history: true,
+      width: '90%',
 
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
@@ -63,6 +78,9 @@
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
 				]
 			});
-		</script>
-	</body>
+
+    </script>
+    <script type="text/javascript" src='js/bundle-hiff.js'></script>
+
+</body>
 </html>

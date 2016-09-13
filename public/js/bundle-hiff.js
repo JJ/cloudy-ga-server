@@ -184,20 +184,20 @@ process.umask = function() { return 0; };
 (function (process){
 
 
-var nodeo = require('nodeo'),
-utils= nodeo.utils,
-HIFF = nodeo.HIFF,
-fluxeo = nodeo.FluxEO;
-
-var Population = fluxeo.Population,
-Selection = fluxeo.Selection,
-Tournament = Selection.Tournament;
-
-
-   // get line chart canvas
+    var nodeo = require('nodeo'),
+	utils= nodeo.utils,
+	HIFF = nodeo.HIFF,
+	fluxeo = nodeo.FluxEO;
+    
+    var Population = fluxeo.Population,
+	Selection = fluxeo.Selection,
+	Tournament = Selection.Tournament;
+    
+    // get line chart canvas
+    var chart_div = document.getElementById('chart');
     var fitness = document.getElementById('fitness').getContext('2d');
-    fitness.canvas.width=document.getElementById('canvas').clientWidth*0.9;
-    fitness.canvas.height=document.getElementById('canvas').clientHeight*0.8;
+    fitness.canvas.width=chart_div.clientWidth*0.9;
+    fitness.canvas.height=chart_div.clientHeight*0.8;
 
     // Chart data
     var chart_size = 50;
@@ -212,10 +212,11 @@ Tournament = Selection.Tournament;
             datasets : [
 		{
 		    label: "Fitness",
-                    fillColor : "rgba(172,194,132,0.4)",
-                    strokeColor : "#ACC26D",
-                    pointColor : "#fff",
-                    pointStrokeColor : "#9DB86D",
+		    backgroundColor : "rgba(200,214,219,0.4)",
+                    fillColor : "rgba(200,214,219,0.4)",
+                    strokeColor : "#eee8d5",
+                    pointColor : "#111",
+                    pointStrokeColor : "#ccc",
                     data : []
 		}
             ]
@@ -223,52 +224,39 @@ Tournament = Selection.Tournament;
     };
     var this_chart = new Chart( fitness, fitness_data);
 
-    // var this_chart = new Chart(fitness).Line(fitness_data,  { 
-    // 	responsive: false,
-    // 	maintainAspectRatio: true
-    // });
+    // Back to EA config
+    var chromosome_size = 256;
+    var population_size = 1024;
+    var tournament_size = 2;
+    var total_generations = 0;
+    var UUID = parseInt(window.navigator.userAgent.replace(/\D+/g, ''));
+    console.log(UUID);
+    var hiff = new HIFF.HIFF();
+    
+    var this_fitness = function( individual ) {
+	return hiff.apply( individual );
+    };
+    
+    var random_chromosome = function() {
+	return utils.random( chromosome_size );
+    };
+    
+    var population = new Population();
+    
+    population.initialize( population_size, random_chromosome);
 
-// Back to EA config
-var chromosome_size = 256;
-var population_size = 1024;
-var tournament_size = 2;
-var total_generations = 0;
-var UUID = parseInt(window.navigator.userAgent.replace(/\D+/g, ''));
-console.log(UUID);
-var hiff = new HIFF.HIFF();
+    // start running the GA
+    var generation_count = 0, period = 100;
 
-var this_fitness = function( individual ) {
-    return hiff.apply( individual );
-};
-
-var random_chromosome = function() {
-    return utils.random( chromosome_size );
-};
-
-var population = new Population();
-
-population.initialize( population_size, random_chromosome);
-
-// start running the GA
-var generation_count = 0, period = 100;
-
-// Checks termination conditions
-var check = function( population ) {
+    // Checks termination conditions
+    var check = function( population ) {
 
     if ( population.fitness( population.best()) < 2304  ) {
 	generation_count++;
 	// Perform interchange
 	console.log( " Best " );
 	console.log(population.best());
-	if ( (generation_count % period === 0) ) {
-//	    console.log(generation_count);
-	    
-	    // chart fitness
-	    // if ( fitness_data.labels.length > chart_size ) {
-	    // 	this_chart.removeData();
-	    // }
-	    // this_chart.addData([population.best().fitness], generation_count);
-            // this_chart.update();
+	if ( (generation_count % period === 1) ) {
 
 //	    if (typeof  this_chart.datasets[0].data !== 'undefined' ) {
 //		this_chart.data.labels.splice(0, 1);
