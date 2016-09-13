@@ -2,7 +2,7 @@
  * Solarized Dark theme for reveal.js.
  * Author: Achim Staebler
  */
-@import 'https://fonts.googleapis.com/css?family=Lato|Roboto';
+@import 'https://fonts.googleapis.com/css?family=Lato|Roboto|Space+Mono';
 
 /**
  * Solarized colors by Ethan Schoonover
@@ -154,7 +154,7 @@ body {
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3); }
 
 .reveal code {
-  font-family: monospace; }
+  font-family: "Space mono", monospace; }
 
 .reveal pre code {
   display: block;
