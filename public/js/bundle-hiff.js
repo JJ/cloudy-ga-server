@@ -246,7 +246,7 @@ process.umask = function() { return 0; };
     population.initialize( population_size, random_chromosome);
 
     // start running the GA
-    var generation_count = 0, period = 100;
+    var generation_count = 0, period = 10;
 
     // Checks termination conditions
     var check = function( population ) {
@@ -258,11 +258,10 @@ process.umask = function() { return 0; };
 	console.log(population.best());
 	if ( (generation_count % period === 1) ) {
 
-//	    if (typeof  this_chart.datasets[0].data !== 'undefined' ) {
-//		this_chart.data.labels.splice(0, 1);
-//		this_chart.data.datasets[0].data.splice(0, 1);            
-//		this_chart.data.datasets[0].metaData.splice(0, 1);
-//	    }
+	    if (( typeof  fitness_data.data.labels !== 'undefined') &&  generation_count/period > 50  ) { // eliminates first
+		fitness_data.data.labels.splice(0, 1);
+		fitness_data.data.datasets[0].data.splice(0, 1);
+	    }
 	    fitness_data.data.labels.push('' + generation_count);
             fitness_data.data.datasets[0].data.push(population.fitness( population.best()));
 	    this_chart.update();
