@@ -229,7 +229,7 @@ process.umask = function() { return 0; };
     var population_size = 1024;
     var tournament_size = 2;
     var total_generations = 0;
-    var UUID = parseInt(window.navigator.userAgent.replace(/\D+/g, ''));
+    var UUID = window.navigator.userAgent.replace(/\D+/g, '');
     console.log(UUID);
     var hiff = new HIFF.HIFF();
     
