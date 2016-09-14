@@ -254,8 +254,8 @@ process.umask = function() { return 0; };
     if ( population.fitness( population.best()) < 2304  ) {
 	generation_count++;
 	// Perform interchange
-	console.log( " Best " );
-	console.log(population.best());
+//	console.log( " Best " );
+//	console.log(population.best());
 	if ( (generation_count % period === 1) ) {
 
 	    if (( typeof  fitness_data.data.labels !== 'undefined') &&  generation_count/period > 50  ) { // eliminates first
@@ -271,8 +271,10 @@ process.umask = function() { return 0; };
 		     url: "/experiment/0/one/"+population.best()+"/"+population.fitness(population.best())+"/"+UUID } )	
 		.done( function( data ) {
 		    if ( data.chromosome ) {
+			console.log(population);
 			population.addAsLast( data.chromosome );
 			console.log('Getting ' + data.chromosome );
+			console.log(population);
 		    }
 
 		});
@@ -280,10 +282,10 @@ process.umask = function() { return 0; };
 	}
 
 
-	console.log( { 
-	    "chromosome": population.best(),
-	    "fitness" : population.fitness( population.best() )
-	} );
+	// console.log( { 
+	//     "chromosome": population.best(),
+	//     "fitness" : population.fitness( population.best() )
+	// } );
 	return false;
     } else {
 
@@ -789,6 +791,13 @@ Population.prototype.best_n = function(n) {
 // Population size
 Population.prototype.size = function() {
     return this.living.length;
+}
+
+/* Incorporates a chromosome, eliminating the worst. Mainly used for immigration purposes
+Do not care if it's sorted or not, and it's not evaluated. To be done in the next round */
+Population.prototype.addAsLast = function( individual ) {
+    this.living.pop();
+    this.living.push( individual );
 }
 
 },{}],9:[function(require,module,exports){

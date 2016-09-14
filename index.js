@@ -99,7 +99,10 @@ app.put('/experiment/:expid/one/:chromosome/:fitness/:uuid', function(req, res){
 			     fitness: parseInt(req.params.fitness),
 			     IP: client_ip,
 			     worker_uuid:req.params.uuid} );
-	res.send( { length : Object.keys(chromosomes).length });
+	var keys = Object.keys(chromosomes );
+	var one = keys[ Math.floor(keys.length*Math.random())];
+	console.log( "Sending " + one );
+	res.send( { 'chromosome': one } );
 	if ( app.is_solution( req.params.fitness ) ) {
 	    console.log( "Solution!");
 	    logger.info( "finish", { solution: req.params.chromosome } );
