@@ -271,7 +271,7 @@ process.umask = function() { return 0; };
 		     url: "/experiment/0/one/"+population.best()+"/"+population.fitness(population.best())+"/"+UUID } )	
 		.done( function( data ) {
 		    if ( data.chromosome ) {
-			eo.incorporate( data.chromosome );
+			population.addAsLast( data.chromosome );
 			console.log('Getting ' + data.chromosome );
 		    }
 
