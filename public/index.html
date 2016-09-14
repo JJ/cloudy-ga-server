@@ -107,9 +107,57 @@
 	    <aside class='notes'>Right answer probably is that most of you did not do it. Even if you have, maybe you have seen your memory consumption going up, your CPU fan fanning or some other thing that has told you uh-oh-what-is-this? </aside>
 	  </section>
 
-	  
+	  <section>
+	    <h2>Looked like a good idea...</h2>
+	    <h2 class='fragment'>...you asked nicely..</h2>
+	    <h2 class='fragment'>...just because..</h2>
+	  </section>
+
+	  <section>
+	    <h1>But <strong>you</strong> did it</h1>
+	  </section>
+
+	  <section>
+	    <h1>... Acting as a computing node via your decision</h1>
+	  </section>
 	</section>
 
+	<!-- Or maybe not -->
+	<section>
+	  <section><h1>This is an evolutionary algorithm</h1></section>
+
+	  <section><h1>You are evolving solutions to the HIFF problem</h1></section>
+
+	  <section><h2><a href='http://github.com/JJ/cloudy-ga-server'>Server code</a></h2>
+	    <pre><code>app.put('/experiment/:expid/one/:chromosome/:fitness/:uuid',
+  function(req, res){
+    if ( req.params.expid != sequence.toString() ) {
+	res.status(410)
+	    .send({ current_expid: sequence });
+    } else if ( req.params.chromosome ) {
+	chromosomes[ req.params.chromosome ] = req.params.fitness; 
+		// logging stuff
+	var keys = Object.keys(chromosomes );
+	var one = keys[ Math.floor(keys.length*Math.random())];
+	res.send( { 'chromosome': one } );
+//more stuff here
+    } 
+  });		
+	    </code></pre>
+	  </section>
+
+	  <section><h2>Client code</h2>
+<pre><code>$.ajax({ type: 'put',
+    url: "/experiment/0/one/"+population.best()+"/"
+          +population.fitness(population.best())+"/"+UUID } )	
+		.done( function( data ) {
+		    if ( data.chromosome ) {
+			population.addAsLast( data.chromosome );
+		    }
+</code></pre>
+	  </section>
+
+	</section>
 	  <!-- Credits -->
 	<section><h2>Credits</h2>
 	  <ul class='credits'>
@@ -144,13 +192,13 @@
       Reveal.addEventListener( 'slidechanged', function( event ) {
       var graphdiv = document.getElementById('chart');
       var graph= document.getElementById('fitness');
-      if ( event.indexh === 4 ) {
+      if ( event.indexh === 5 ) {
       graphdiv.style.left='200px';
       graphdiv.style.top='100px';			
       graph.style.width='85%';
       graph.style.height='500px';
       }
-      if ( event.indexh === 5 ) {
+      if ( event.indexh === 6 ) {
       graphdiv.style.left='';
       graphdiv.style.top='20px';
       graphdiv.style.right='20px';
