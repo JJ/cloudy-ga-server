@@ -204,7 +204,7 @@ process.umask = function() { return 0; };
     var fitness_data = {
 	type: 'line',
 	options:  { 
-	    responsive: false,
+	    responsive: true,
 	    maintainAspectRatio: true
 	},
 	data: {
@@ -246,7 +246,7 @@ process.umask = function() { return 0; };
     population.initialize( population_size, random_chromosome);
 
     // start running the GA
-    var generation_count = 0, period = 10;
+    var generation_count = 0, period = 100;
 
     // Checks termination conditions
     var check = function( population ) {
