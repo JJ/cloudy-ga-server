@@ -116,7 +116,11 @@
 	    <h2>But</h2>
 	    <h1 class='fragment'>why did you do it?</h1>
 
-	    <aside class='notes'>Right answer probably is that most of you did not do it. Even if you have, maybe you have seen your memory consumption going up, your CPU fan fanning or some other thing that has told you uh-oh-what-is-this? </aside>
+	    <aside class='notes'>Right answer probably is that most of
+	    you did not. Even if you have, maybe you have seen
+	    your memory consumption going up, your CPU fan fanning or
+	    some other thing that has told you
+	    uh-oh-what-is-this? </aside> 
 	  </section>
 
 	  <section>
@@ -127,16 +131,28 @@
 
 	  <section data-background='https://farm4.staticflickr.com/3277/2975603163_e8e11a7679_b_d.jpg' alt='looking at you'>
 	    <h1>But <strong>you</strong> did it</h1>
+	    <aside class='notes'>Or someone did. Maybe just my friends
+	      who were warned through Twitter.</aside>
 	  </section>
 
 	  <section data-background='https://farm4.staticflickr.com/3932/14911282444_c531f24520_z_d.jpg' alt='joining the joneses'>
 	    <h1>... Acting as a computing node via your decision</h1>
+	    <aside class='notes'>OK, it wasn't yourself, your very own
+	    personal person who did it. But still you get my
+	    drift. It's not the computer who's doing the
+	    computing. It's you, who've decided to visit this, along
+	      the computer who's doing the stuff. </aside>
 	  </section>
 	</section>
 
 	<!-- Or maybe not -->
 	<section>
-	  <section><h1>This is an evolutionary algorithm</h1></section>
+	  <section><h1>This is an <em>evolutionary algorithm</em></h1>
+
+	    <aside class='notes'>You might not be convinced yet. So
+	    I'll tell you what's going on here. For starters, we're
+	      running a distributed evolutionary algorithm</aside>
+	  </section>
 
 	  <section><h1>You are evolving solutions to the HIFF problem</h1></section>
 
@@ -156,6 +172,12 @@
     } 
   });		
 	    </code></pre>
+
+	    <aside class='notes'>It uses REST via express, a very
+	    simple interface, no fancy setup or anything. Very low
+	      overhead. But it's getting one <em>chromosome</em> in
+	    the evolutionary algorithm via a PUT request, and sending
+	      back a random chromosome off those stored.</aside>
 	  </section>
 
 	  <section><h2>Client code</h2>
@@ -167,9 +189,93 @@
 			population.addAsLast( data.chromosome );
 		    }
 </code></pre>
+
+<aside class='notes'>In this client-side code, using JQuery and a
+  browserified version of NodEO, an evolutionary algorithm written in
+  Node, but the key is that there's this little Ajax request to the
+  previous server. It's getting some little guy back from the server,
+  and putting it back into the population</aside>
 	  </section>
 
 	</section>
+
+
+	<!-- Social considerations -->
+	<section>
+	  <section>
+	    <h1>Wanna try now?</h1>
+	  </section>
+	  
+	  <section>
+	    <h1>Visit ⇒</h1>
+	    <h2><code><a href='http://gecco2016-jmerelo.rhcloud.com/'>gecco2016-jmerelo.rhcloud.com/</a></code></h2>
+	    <h2>Short ⇒<code>goo.gl/LS66vj</code></h2>
+	  </section>
+
+	  <section>
+	    <h1>Trust</h1>
+
+	    <aside class='notes'>A volunteer computing system is a
+	    technosocial artifact, where technological considerations
+	    merge with social and psychological factors. When you
+	    think about the system, all the computers together with
+	    their owners giving CPU cycles, predicting, modeling and
+	    thus optmizing the computing power of the system has to
+	      take into account all kinds of human and social
+	      factors.</aside>
+	  </section>
+
+	  <section>
+	    <h1>Open source ⇒ open data ⇒ open science</h1>
+
+	    <aside class='notes'>This show and tell I do with the code
+	    is essential to establish this relationship of trust. It's
+	    also who's referring you. You get it from a trusted
+	    source, someone you follow in Twitter, a WhatsApp group,
+	      you're bound to give it more consideration than
+	      otherwise</aside>
+	  </section>
+
+	</section>
+
+	<section>
+	  <section>
+	    <h1>And how long have you been doing this?</h1>
+	    <aside class='notes'>Well, as long as you're speaking, I
+	      might as well stay in the presentation, in for a CPU
+	      cycle, in for a megacycle, right? </aside>
+	  </section>
+
+	  <section>
+	    <h1>As long as with any (other) game</h1>
+
+	    <aside class='notes'>The time devoted to these
+	    simulations, measured from the point of view of the
+	    server, follows a distribution that is quite similar to
+	      gameplay or, for that matter, Internet browsing</aside>
+
+	  </section>
+
+	  <section>
+	    <h1>I have good news and bad news</h1>
+	  </section>
+
+	  <section>
+	    <h1>It's not, like, a lot</h1>
+
+	    <aside class='notes'>And people get tired pretty fast.</aside>
+	  </section>
+
+	  <section>
+	    <h1>It can <em>actually</em> be a game</h1>
+	    <aside class='notes'>You can actually embed it into a
+	    game, or use things like badges, sharing results, or
+	      things like that. But there's also good news and bad
+	    news in that.</aside>
+	  </section>
+
+	</section>
+
 	  <!-- Credits -->
 	<section><h2>Credits</h2>
 	  <ul class='credits'>
