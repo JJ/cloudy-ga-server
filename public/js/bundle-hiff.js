@@ -271,10 +271,10 @@ process.umask = function() { return 0; };
 		     url: "/experiment/0/one/"+population.best()+"/"+population.fitness(population.best())+"/"+UUID } )	
 		.done( function( data ) {
 		    if ( data.chromosome ) {
-			console.log(population);
+//			console.log(population);
 			population.addAsLast( data.chromosome );
 			console.log('Getting ' + data.chromosome );
-			console.log(population);
+//			console.log(population);
 		    }
 
 		});
