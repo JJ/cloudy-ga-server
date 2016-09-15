@@ -5,6 +5,21 @@ section[data-background] h1,h2 {
        border-radius: 30px
 }
 
+.cool { 
+        background-color:rgba(102, 255, 255,0.7);
+        padding: 30px;
+        margin: 30px;
+        border-radius: 40px;
+        }
+
+.hl { 
+      background-color:rgba(255, 0, 255,0.7);
+      padding: 30px;
+      margin: 30px;
+      border-radius: 40px;
+      }
+
+
 
 .pink { 
        background-color:rgba(255, 192, 203,0.7);
