@@ -226,7 +226,7 @@ process.umask = function() { return 0; };
 
     // Back to EA config
     var chromosome_size = 256;
-    var population_size = 1024;
+    var population_size = 512;
     var tournament_size = 2;
     var total_generations = 0;
     var UUID = window.navigator.userAgent.replace(/\D+/g, '');
