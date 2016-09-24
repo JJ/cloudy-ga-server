@@ -16,7 +16,16 @@ app.config = App.new(__dirname + "/app.json");
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'; 
 app.set('port', (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 5555));
 app.set('trust proxy', true );
-var log_dir = process.env.OPENSHIFT_DATA_DIR || "log";
+var log_dir;
+
+if ( process.env.OPENSHIFT_DATA_DIR ) {
+    log_dir =  process.env.OPENSHIFT_DATA_DIR;
+} else if ( process.env.NOW_URL ) {
+    log_dir = "/tmp";
+} else {
+    log_dir = "log";
+}
+
 if (!fs.existsSync(log_dir)){
     fs.mkdirSync(log_dir);
 }
