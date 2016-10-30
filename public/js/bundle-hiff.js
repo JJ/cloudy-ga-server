@@ -259,31 +259,25 @@ process.umask = function() { return 0; };
 	if ( (generation_count % period === 1) ) {
 
 	  if (( typeof  fitness_data.data.labels !== 'undefined') &&  generation_count/period > 50  ) { // eliminates first
-		fitness_data.data.labels.splice(0, 1);
-		fitness_data.data.datasets[0].data.splice(0, 1);
+	    fitness_data.data.labels.splice(0, 1);
+	    fitness_data.data.datasets[0].data.splice(0, 1);
+	  }
+	  fitness_data.data.labels.push('' + generation_count);
+          fitness_data.data.datasets[0].data.push(population.fitness( population.best()));
+	  this_chart.update();
+          
+	  // And puts another one in the pool
+	  $.ajax({ type: 'put',
+		   url: "/experiment/0/one/"+population.best()+"/"+population.fitness(population.best())+"/"+UUID } )	
+	  .done( function( data ) {
+	    if ( data.chromosome ) {
+	      population.addAsLast( data.chromosome );
+	      console.log('Getting ' + data.chromosome );
 	    }
-	    fitness_data.data.labels.push('' + generation_count);
-            fitness_data.data.datasets[0].data.push(population.fitness( population.best()));
-	    this_chart.update();
-
-	    // And puts another one in the pool
-	    $.ajax({ type: 'put',
-		     url: "/experiment/0/one/"+population.best()+"/"+population.fitness(population.best())+"/"+UUID } )	
-		.done( function( data ) {
-		    if ( data.chromosome ) {
-//			console.log(population);
-			population.addAsLast( data.chromosome );
-			console.log('Getting ' + data.chromosome );
-//			console.log(population);
-		    }
-
-		});
-
-	} else {
-          console.log( " Solution found " );
-          console.log(population.best());
-        }
-
+            
+	  });
+          
+	} 
 
 	// console.log( { 
 	//     "chromosome": population.best(),
@@ -291,8 +285,10 @@ process.umask = function() { return 0; };
 	// } );
 	return false;
     } else {
-
-	return true;
+      console.log( "Solution found ");
+      console.log( population.best() );
+      console.log( population.fitness( population.best()))
+      return true;
     }
 };
 
