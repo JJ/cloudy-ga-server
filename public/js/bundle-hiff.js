@@ -227,7 +227,7 @@ process.umask = function() { return 0; };
 
     // Back to EA config
     var chromosome_size = 256;
-    var population_size = 512;
+    var population_size = 1024;
     var tournament_size = 2;
     var total_generations = 0;
     var UUID = window.navigator.userAgent.replace(/\D+/g, '');
@@ -247,7 +247,7 @@ process.umask = function() { return 0; };
     population.initialize( population_size, random_chromosome);
 
     // start running the GA
-    var generation_count = 0, period = 100;
+    var generation_count = 0, period = 50;
 
     // Checks termination conditions
     var check = function( population ) {
