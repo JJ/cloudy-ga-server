@@ -376,28 +376,28 @@ FluxEO.prototype.reproduce = function( population, done ) {
 };
 
 // Incorporate using elitism
-FluxEO.prototype.generation = function( population, done ) {
-    this.reproduce( population, function( population, new_population ) {
-	population.cull( new_population.length );
-	population.insert( new_population );
-	done( population );
-    });
+// var generation = 0;
+FluxEO.prototype.generation = function( population ) {
+//  console.log( "In " + generation ++ );
+  this.reproduce( population, function( population, new_population ) {
+    population.cull( new_population.length );
+    population.insert( new_population );
+  });
 };
 
 
 // Run the algorithm
 FluxEO.prototype.algorithm = function( population, done ) {
-    var that = this;
-    this.generation( population, function( population ) {
-	if ( that.found_solution( population ) ) {
-	    console.log( "Found!!!");
-	    done( population );
-	} else {
-	    setTimeout( function () {
-		that.algorithm( population, done );
-	    }, 0);
-	}
-    });
+  var that = this;
+  this.generation(population);
+  if ( this.found_solution( population ) ) {
+    console.log( "Found!!!");
+    done( population );
+  } else {
+    setTimeout( function () {
+      that.algorithm( population, done );
+    }, 0);
+  }
 };
 
 },{"./nodeo/Population":8,"./nodeo/Selection":10,"./nodeo/ops":18}],4:[function(require,module,exports){
@@ -976,8 +976,8 @@ var ChromosomeFloat={
     , invert: function (chrom) {
      return  new ChromosomeFloat.Chromosome(
          chrom.vector.map( function(e) {
-         return (-e+chrom.minvalue+chrom.maxvalue);
-     }));
+             return (-e+chrom.minvalue+chrom.maxvalue);
+	 }));
     }
 
     // Changes the value at one point by some other randomly calculated
