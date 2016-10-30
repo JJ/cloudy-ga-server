@@ -252,24 +252,24 @@ process.umask = function() { return 0; };
     // Checks termination conditions
     var check = function( population ) {
 
-    if ( population.fitness( population.best()) < 2304  ) {
+      if ( this_fitness( population.best()) < 2304  ) {
 	generation_count++;
 	// Perform interchange
-//	console.log( " Best " );
-//	console.log(population.best());
+        //	console.log( " Best " );
+        //	console.log(population.best());
 	if ( (generation_count % period === 1) ) {
-
+          
 	  if (( typeof  fitness_data.data.labels !== 'undefined') &&  generation_count/period > 50  ) { // eliminates first
 	    fitness_data.data.labels.splice(0, 1);
 	    fitness_data.data.datasets[0].data.splice(0, 1);
 	  }
 	  fitness_data.data.labels.push('' + generation_count);
-          fitness_data.data.datasets[0].data.push(population.fitness( population.best()));
+          fitness_data.data.datasets[0].data.push(this_fitness( population.best()));
 	  this_chart.update();
           
 	  // And puts another one in the pool
 	  $.ajax({ type: 'put',
-		   url: "/experiment/0/one/"+population.best()+"/"+population.fitness(population.best())+"/"+UUID } )	
+		   url: "/experiment/0/one/"+population.best()+"/"+this_fitness(population.best())+"/"+UUID } )	
 	  .done( function( data ) {
 	    if ( data.chromosome ) {
 	      population.addAsLast( data.chromosome );
@@ -279,42 +279,42 @@ process.umask = function() { return 0; };
 	  });
           
 	} 
-
+        
 	// console.log( { 
 	//     "chromosome": population.best(),
 	//     "fitness" : population.fitness( population.best() )
 	// } );
 	return false;
-    } else {
-      console.log( "Solution found ");
-      console.log( population.best() );
-      console.log( population.fitness( population.best()))
-      return true;
-    }
-};
+      } else {
+        console.log( "Solution found ");
+        console.log( population.best() );
+        console.log( this_fitness( population.best()))
+        return true;
+      }
+    };
 
-// Create the evolution/evolvable object
-var eo = new fluxeo( this_fitness,
-		     new Tournament( tournament_size, population_size-2 ),
-		     check);
-
-
-// Start loop
-console.log( "Starting ");
-eo.algorithm( population, function ( population ) {
-
+  // Create the evolution/evolvable object
+  var eo = new fluxeo( this_fitness,
+		       new Tournament( tournament_size, population_size-2 ),
+		       check);
+  
+  
+  // Start loop
+  console.log( "Starting ");
+  eo.algorithm( population, function ( population ) {
+    
     console.log( {
-	end: { 
-	    generation: total_generations,
-	    best : { 
-		chromosome : population.best,
-		fitness : population.fitness(population.best)
-	    }
+      end: { 
+	generation: total_generations,
+	best : { 
+	  chromosome : population.best(),
+	  fitness : this_fitness(population.best())
 	}
+      }
     });
     console.log("Finished");
-});
-
+  });
+  
 
 
 
@@ -355,10 +355,10 @@ FluxEO.prototype.evaluate = function( population, done ) {
 
 // Create a pool of new individuals
 FluxEO.prototype.create_pool = function( population, done ) {
-    var that = this;
+    var selection = this.selection;
     this.evaluate( population, function( population ) {
 	population.rank();
-	var new_population = that.selection.select( population );
+	var new_population = selection.select( population );
 	done( population, new_population );
     });
 };
@@ -391,9 +391,9 @@ FluxEO.prototype.algorithm = function( population, done ) {
     console.log( "Found!!!");
     done( population );
   } else {
-    setInterval( function () {
+    setTimeout( function () {
       that.algorithm( population, done );
-    }, 1);
+    }, 0);
   }
 };
 
@@ -758,11 +758,13 @@ Population.prototype.fitness = function( individual ) {
 
 // Removes last elements
 Population.prototype.cull = function( how_many ) {
-    if ( how_many < this.living.length ) {
-	for ( var i = 0; i < how_many; i++ ) {
-	    this.living.pop();
-	}
+  if ( how_many < this.living.length ) {
+    for ( var i = 0; i < how_many; i++ ) {
+      var removed = this.living.pop();
+      delete this.fitness_of[ removed ];
     }
+  }
+
 };
 
 // Inserts the new population into the old
