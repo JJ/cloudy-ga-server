@@ -111,7 +111,8 @@ app.put('/experiment/:expid/one/:chromosome/:fitness/:uuid', function(req, res){
 	var keys = Object.keys(chromosomes );
 	var one = keys[ Math.floor(keys.length*Math.random())];
 	console.log( "Sending " + one );
-	res.send( { 'chromosome': one } );
+	res.send( { 'chromosome': one,
+                    'cache_size': keys.length } );
 	if ( app.is_solution( req.params.fitness ) ) {
 	    console.log( "Solution!");
 	    logger.info( "finish", { solution: req.params.chromosome } );
