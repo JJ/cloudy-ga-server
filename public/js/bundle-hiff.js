@@ -258,7 +258,7 @@ process.umask = function() { return 0; };
 //	console.log(population.best());
 	if ( (generation_count % period === 1) ) {
 
-	    if (( typeof  fitness_data.data.labels !== 'undefined') &&  generation_count/period > 50  ) { // eliminates first
+	  if (( typeof  fitness_data.data.labels !== 'undefined') &&  generation_count/period > 50  ) { // eliminates first
 		fitness_data.data.labels.splice(0, 1);
 		fitness_data.data.datasets[0].data.splice(0, 1);
 	    }
@@ -279,7 +279,10 @@ process.umask = function() { return 0; };
 
 		});
 
-	}
+	} else {
+          console.log( " Solution found " );
+          console.log(population.best());
+        }
 
 
 	// console.log( { 
