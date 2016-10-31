@@ -9,7 +9,7 @@ great_chromosome = { "string": "whatever",
 // Not really sure why I did this... 
 describe( "Loads configuration correctly", function() {
     it('Should set repo correctly', function( done ) {
-	app.config.should.have.property('repository', "https://github.com/JJ/splash-volunteer");
+	app.config.should.have.property('repository', "https://github.com/JJ/cloudy-ga-server");
 	done();
     });
 });
