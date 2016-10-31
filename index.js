@@ -56,6 +56,7 @@ if ( typeof process.env.PAPERTRAIL_PORT !== 'undefined' && typeof process.env.PA
 }
 
 // internal variables
+console.log(app.config.vars);
 var cache = leroux({sweepDelay: 200, maxSize: app.config.vars.cache_size || 128});
 var ip_cache = leroux({maxSize: 1024 });
 var chromosomes = {},
@@ -126,7 +127,8 @@ app.put('/experiment/:expid/one/:chromosome/:fitness/:uuid', function(req, res){
       var one = keys[ Math.floor(keys.length*Math.random())];
       console.log( "Sending " + one );
       res.send( { 'chromosome': one,
-                  'cache_size': cache.size } );
+                  'cache_size': cache.size,
+                  'updated': updated} );
       if ( app.is_solution( req.params.fitness ) ) {
 	console.log( "Solution!");
 	logger.info( "finish", { solution: req.params.chromosome } );
