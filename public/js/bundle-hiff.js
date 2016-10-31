@@ -272,9 +272,11 @@ process.umask = function() { return 0; };
 		   url: "/experiment/0/one/"+population.best()+"/"+this_fitness(population.best())+"/"+UUID } )	
 	  .done( function( data ) {
             console.log( data );
-            if ( data.updated === false ) {
-              document.location.reload(); // restart EA
-            } else if ( data.chromosome ) {
+            // if ( data.updated === false ) {
+            //   document.location.reload(); // restart EA
+            // } else
+
+            if ( data.chromosome ) {
 	      population.addAsLast( data.chromosome );
 	      console.log('Getting ' + data.chromosome );
 	    }
